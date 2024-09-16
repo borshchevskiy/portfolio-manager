@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${app.database.name}?currentSchema=${app.database.schema}
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        hbm2ddl:
+          auto: validate
+    open-in-view: false
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    enabled: true
+    default-schema: ${app.database.schema}
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: redis
+app:
+  database:
+    name: portfolio_service
+    schema: portfolio_service
+
