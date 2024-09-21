@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0
+      author: iborshchevskiy
+      changes:
+        - createTable:
+            tableName: deals
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: security_name
+                  type: varchar(255)
+              - column:
+                  name: ticker
+                  type: varchar(255)
+              - column:
+                  name: deal_type
+                  type: varchar(255)
+              - column:
+                  name: acquisition_price
+                  type: numeric(16,8)
+              - column:
+                  name: quantity
+                  type: bigint
+              - column:
+                  name: acquisition_value
+                  type: numeric(16,2)
+              - column:
+                  name: market_commission
+                  type: numeric(8,2)
+              - column:
+                  name: broker_commission
+                  type: numeric(8,2)
+              - column:
+                  name: other_commission
+                  type: numeric(8,2)
+              - column:
+                  name: total_commission
+                  type: numeric(8,2)
+              - column:
+                  name: date
+                  type: timestamp
+              - column:
+                  name: position_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: deal_position_fk
+                    referencedTableName: positions
+                    referencedColumnNames: id

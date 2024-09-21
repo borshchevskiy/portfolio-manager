@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0
+      author: iborshchevskiy
+      changes:
+        - createTable:
+            tableName: portfolios
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: cash
+                  type: numeric(16,2)
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: portfolio_user_fk
+                    referencedTableName: users
+                    referencedColumnNames: id

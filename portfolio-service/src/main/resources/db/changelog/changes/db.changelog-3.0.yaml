@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0
+      author: iborshchevskiy
+      changes:
+        - createTable:
+            tableName: positions
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: security_name
+                  type: varchar(255)
+              - column:
+                  name: ticker
+                  type: varchar(255)
+              - column:
+                  name: position_type
+                  type: varchar(255)
+              - column:
+                  name: average_acquisition_price
+                  type: numeric(16,8)
+              - column:
+                  name: quantity
+                  type: bigint
+              - column:
+                  name: acquisition_value
+                  type: numeric(16,2)
+              - column:
+                  name: portfolio_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: position_portfolio_fk
+                    referencedTableName: portfolios
+                    referencedColumnNames: id
