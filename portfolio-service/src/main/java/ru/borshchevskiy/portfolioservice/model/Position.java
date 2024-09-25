@@ -1,39 +1,60 @@
 package ru.borshchevskiy.portfolioservice.model;
 
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-@Table("positions")
-@Data
+@Entity
+@Table(name = "positions")
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Position {
     @Id
-    @Column("id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @Column("security_name")
+    @Column(name = "security_name")
     private String securityName;
-    @Column("ticker")
+    @Column(name = "ticker")
     private String ticker;
-    @Column("position_type")
+    @Column(name = "position_type")
+    @Enumerated(EnumType.STRING)
     private PositionType positionType;
     /**
      * Average acquisition price of share
      */
-    @Column("average_acquisition_price")
+    @Column(name = "average_acquisition_price")
     private BigDecimal averageAcquisitionPrice;
-    @Column("quantity")
+    @Column(name = "quantity")
     private Long quantity;
     /**
      * Sum of acquisition values of deals
      */
-    @Column("acquisition_value")
+    @Column(name = "acquisition_value")
     private BigDecimal acquisitionValue;
-    @Column("portfolio_id")
+    @ManyToOne
+    @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
+    @OneToMany(mappedBy = "position")
+    private List<Deal> deals;
     @Transient
     private BigDecimal currentPrice;
     @Transient

@@ -1,47 +1,64 @@
 package ru.borshchevskiy.portfolioservice.model;
 
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Table("deals")
-@Data
+@Entity
+@Table(name = "deals")
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Deal {
     @Id
-    @Column("id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @Column("security_name")
+    @Column(name = "security_name")
     private String securityName;
-    @Column("ticker")
+    @Column(name = "ticker")
     private String ticker;
-    @Column("position_type")
+    @Column(name = "deal_type")
+    @Enumerated(EnumType.STRING)
     private DealType dealType;
     /**
      * Price of single share
      */
-    @Column("acquisition_price")
+    @Column(name = "acquisition_price")
     private BigDecimal acquisitionPrice;
-    @Column("quantity")
+    @Column(name = "quantity")
     private Long quantity;
     /**
      * Value of all shares in deal = acquisitionPrice * quantity
      */
-    @Column("acquisition_value")
+    @Column(name = "acquisition_value")
     private BigDecimal acquisitionValue;
-    @Column("market_commission")
+    @Column(name = "market_commission")
     private BigDecimal marketCommission;
-    @Column("broker_commission")
+    @Column(name = "broker_commission")
     private BigDecimal brokerCommission;
-    @Column("other_commission")
+    @Column(name = "other_commission")
     private BigDecimal otherCommission;
-    @Column("total_commission")
+    @Column(name = "total_commission")
     private BigDecimal totalCommission;
-    @Column("deal_date")
+    @Column(name = "date")
     private LocalDateTime date;
-    @Column("position_id")
+    @ManyToOne
+    @JoinColumn(name = "position_id")
     private Position position;
 }
