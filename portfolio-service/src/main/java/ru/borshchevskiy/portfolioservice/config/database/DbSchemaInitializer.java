@@ -2,8 +2,10 @@ package ru.borshchevskiy.portfolioservice.config.database;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import ru.borshchevskiy.portfolioservice.exception.InitializationException;
 
 import javax.sql.DataSource;
@@ -11,11 +13,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-@Configuration
-@RequiredArgsConstructor
-public class DbSchemaInitializer implements InitializingBean {
 
-    private final DataSource dataSource;
+public class DbSchemaInitializer implements InitializingBean {
+    @Autowired
+    private DataSource dataSource;
     @Value("${app.database.schema}")
     private String schemaName;
 
