@@ -24,7 +24,7 @@ public class Portfolio {
     private String name;
     @Column(name = "cash")
     private BigDecimal cash;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
