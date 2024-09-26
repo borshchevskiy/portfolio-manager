@@ -20,7 +20,6 @@ import java.util.Objects;
 @Table(name = "users")
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 public class User {
     @Id
@@ -54,10 +53,7 @@ public class User {
         if (!Objects.equals(username, user.username)) return false;
         if (!Objects.equals(firstname, user.firstname)) return false;
         if (!Objects.equals(lastname, user.lastname)) return false;
-        if (!Objects.equals(email, user.email)) return false;
-        if (!Objects.equals(password, user.password)) return false;
-        if (!Objects.equals(createdDate, user.createdDate)) return false;
-        return Objects.equals(lastModifiedDate, user.lastModifiedDate);
+        return (!Objects.equals(email, user.email));
     }
 
     @Override
@@ -67,10 +63,18 @@ public class User {
         result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
         result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
-        result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
 

@@ -4,16 +4,15 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "positions")
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 public class Position {
     @Id
@@ -39,7 +38,7 @@ public class Position {
      */
     @Column(name = "acquisition_value")
     private BigDecimal acquisitionValue;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
     @OneToMany(mappedBy = "position", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -52,4 +51,32 @@ public class Position {
     private BigDecimal profitLoss;
     @Transient
     private Double profitLossPercentage;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Position position = (Position) o;
+
+        return Objects.equals(id, position.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "id=" + id +
+                ", securityName='" + securityName + '\'' +
+                ", ticker='" + ticker + '\'' +
+                ", positionType=" + positionType +
+                ", averageAcquisitionPrice=" + averageAcquisitionPrice +
+                ", quantity=" + quantity +
+                ", acquisitionValue=" + acquisitionValue +
+                '}';
+    }
 }

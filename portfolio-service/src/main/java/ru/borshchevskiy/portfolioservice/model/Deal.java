@@ -1,28 +1,18 @@
 package ru.borshchevskiy.portfolioservice.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "deals")
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 public class Deal {
     @Id
@@ -58,7 +48,35 @@ public class Deal {
     private BigDecimal totalCommission;
     @Column(name = "date")
     private LocalDateTime date;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id")
     private Position position;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Deal deal = (Deal) o;
+
+        return Objects.equals(id, deal.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Deal{" +
+                "id=" + id +
+                ", securityName='" + securityName + '\'' +
+                ", ticker='" + ticker + '\'' +
+                ", dealType=" + dealType +
+                ", acquisitionPrice=" + acquisitionPrice +
+                ", quantity=" + quantity +
+                ", acquisitionValue=" + acquisitionValue +
+                '}';
+    }
 }

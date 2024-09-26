@@ -1,30 +1,19 @@
 package ru.borshchevskiy.portfolioservice.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "portfolios")
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 public class Portfolio {
     @Id
@@ -70,5 +59,28 @@ public class Portfolio {
         this.positionsValue = BigDecimal.ZERO;
         this.profitLoss = BigDecimal.ZERO;
         this.profitLossPercentage = 0.0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Portfolio portfolio = (Portfolio) o;
+
+        return Objects.equals(id, portfolio.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Portfolio{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
