@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-class DbSchemaInitializerTest extends TestcontainersBase {
+class SchemaInitializerTest extends TestcontainersBase {
 
     @Autowired
     private DataSource dataSource;
