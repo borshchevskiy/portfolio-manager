@@ -21,6 +21,7 @@ public class UserService {
 
     private static final String USER_WITH_EMAIL_EXISTS = "User with email %s already exists!";
     private static final String USER_WITH_ID_EXISTS = "User with id %d already exists!";
+    private static final String USER_WITH_ID_NOT_FOUND = "User with id %d not found.";
     private static final String USER_WITH_EMAIL_NOT_FOUND = "User with email %s not found.";
 
     @Transactional(readOnly = true)
@@ -45,18 +46,16 @@ public class UserService {
     @Transactional
     public UserResponseDto update(UserRequestDto userRequestDto) {
         try {
-            return userRepository.findByEmail(userRequestDto.getEmail())
-                    .map(user ->
-                    {
+            return userRepository.findById(userRequestDto.getId())
+                    .map(user -> {
                         userMapper.updateUser(user, userRequestDto);
                         return user;
                     })
                     .map(userRepository::save)
                     .map(userMapper::toResponseDto)
-                    .orElseThrow(() ->
-                    {
+                    .orElseThrow(() -> {
                         throw new ResourceNotFoundException(
-                                String.format(USER_WITH_EMAIL_NOT_FOUND, userRequestDto.getEmail()));
+                                String.format(USER_WITH_ID_NOT_FOUND, userRequestDto.getId()));
                     });
         } catch (DataIntegrityViolationException e) {
             throw new ResourceAlreadyExistsException(
@@ -66,29 +65,25 @@ public class UserService {
 
     @Transactional
     public UserResponseDto updatePassword(UserRequestDto userRequestDto) {
-        return userRepository.findByEmail(userRequestDto.getEmail())
-                .map(user ->
-                {
-                    user.setPassword((userRequestDto.getPassword()));
+        return userRepository.findById(userRequestDto.getId())
+                .map(user -> {
+                    user.setPassword(userRequestDto.getPassword());
                     return user;
                 })
                 .map(userRepository::save)
                 .map(userMapper::toResponseDto)
-                .orElseThrow(() ->
-                {
+                .orElseThrow(() -> {
                     throw new ResourceNotFoundException(
-                            String.format(USER_WITH_EMAIL_NOT_FOUND, userRequestDto.getEmail()));
+                            String.format(USER_WITH_ID_NOT_FOUND, userRequestDto.getId()));
                 });
     }
 
     @Transactional
-    public UserResponseDto delete(String email) {
-        return userRepository.deleteByEmail(email)
-                .map(userMapper::toResponseDto)
-                .orElseThrow(() ->
-                {
-                    throw new ResourceNotFoundException(
-                            String.format(USER_WITH_EMAIL_NOT_FOUND, email));
-                });
+    public void delete(String email) {
+        Integer result = userRepository.deleteByEmail(email);
+        if (result == null || result == 0) {
+            throw new ResourceNotFoundException(
+                    String.format(USER_WITH_EMAIL_NOT_FOUND, email));
+        }
     }
 }
