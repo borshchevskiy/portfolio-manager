@@ -43,7 +43,7 @@ class PortfolioRepositoryTest extends TestcontainersBase {
         user.setUsername("username");
         user.setPassword("password");
         user.setEmail("email");
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
     }
 
     @AfterEach
